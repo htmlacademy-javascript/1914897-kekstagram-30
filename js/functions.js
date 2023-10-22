@@ -36,3 +36,18 @@ getNumber(('агент 007')); // 7
 getNumber(('а я томат')); // NaN
 
 
+// Функция подсчёта времени
+
+const transformTimeToString = (time) => {
+  const [hours, minutes] = time.split(':');
+  return (hours * 60) + +minutes;
+}
+
+const checkingMeetingTime = (startWork, endWork, startMeeting, meetingDuration) => {
+  startWork = transformTimeToString(startWork);
+  endWork = transformTimeToString(endWork);
+  startMeeting = transformTimeToString(startMeeting);
+  return (startMeeting >= startWork) && (startMeeting + meetingDuration) <= endWork;
+};
+
+checkingMeetingTime('8:00', '13:00', '12:00', 120);
