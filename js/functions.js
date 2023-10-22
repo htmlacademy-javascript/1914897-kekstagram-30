@@ -1,5 +1,4 @@
 // Функция для проверки длины строки
-
 function checkStirngLength(string, symbols) {
   return string.length <= symbols;
 }
@@ -35,19 +34,21 @@ getNumber(('1 кефир, 0.5 батона')); // 105
 getNumber(('агент 007')); // 7
 getNumber(('а я томат')); // NaN
 
+// 5.16. Функция для проверки не выходит ли встреча за рамки рабочего дня
 
-// Функция подсчёта времени
-
-const transformTimeToString = (time) => {
-  const [hours, minutes] = time.split(':');
-  return (hours * 60) + +minutes;
-}
-
-const checkingMeetingTime = (startWork, endWork, startMeeting, meetingDuration) => {
-  startWork = transformTimeToString(startWork);
-  endWork = transformTimeToString(endWork);
-  startMeeting = transformTimeToString(startMeeting);
-  return (startMeeting >= startWork) && (startMeeting + meetingDuration) <= endWork;
+const timeToString = (timeString) => {
+  const [hours, minutes] = timeString.split(':');
+  return (hours * 60) + Number(minutes);
 };
 
-checkingMeetingTime('8:00', '13:00', '12:00', 120);
+const isWorkingTime = (startWork, endWork, startMeeting, longMeeting) => {
+  startWork = timeToString(startWork);
+  endWork = timeToString(endWork);
+  startMeeting = timeToString(startMeeting);
+  return (startMeeting >= startWork) && (startMeeting + longMeeting) <= endWork;
+};
+
+isWorkingTime('08:00', '17:30', '10:00', 120);
+isWorkingTime('08:00', '14:30', '14:00', 90);
+
+
