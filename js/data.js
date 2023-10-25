@@ -1,6 +1,4 @@
-import { generateId, getRandomArrayElement, getRandomInteger} from './util';
-
-// Массивы с данными
+import { generateId, getRandomArrayElement, getRandomInteger } from './util';
 
 const MESSAGES = ['Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -13,13 +11,8 @@ const NAMES = ['Евгений', 'Пётр', 'Борис', 'Яков', 'Дани
 
 const PHOTO_DESCRIPTIONS = ['Мой кот', 'Осенний лес', 'Готовим дома', 'Ужин при свечах', 'Путешествую', 'В дождливом Лондоне'];
 
-// Генерация случайных id
-
 const generatePhotoId = generateId();
 const generateCommentId = generateId();
-
-
-// Функция, возвращающая комменатрий в виде объекта
 
 const createComment = () => {
   const message = getRandomArrayElement(MESSAGES);
@@ -32,9 +25,7 @@ const createComment = () => {
   };
 };
 
-
-// Функция, возвращающая фотографию со значениями в виде объекта
-const createElement = () => {
+const createPhoto = () => {
   const photoId = generatePhotoId();
   return {
     id: photoId,
@@ -45,9 +36,6 @@ const createElement = () => {
   };
 };
 
+Array.from({ length: 25 }, createPhoto);
 
-// Создание 25 элементов массива, каждый элемент создается с помощью функции createElement
-
-Array.from({ length: 25 }, createElement);
-
-export {createElement};
+export {createPhoto};
