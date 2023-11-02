@@ -1,5 +1,11 @@
 import { generateId, getRandomArrayElement, getRandomInteger } from './util';
 
+const AVATAR_COUNT = 6;
+const COMMENTS_COUNT = 30;
+const MIN_LIKES = 15;
+const MAX_LIKES = 30;
+const PHOTOS_COUNT = 25;
+
 const MESSAGES = ['Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра.В конце концов это просто непрофессионально.',
@@ -19,7 +25,7 @@ const createComment = () => {
   const commentId = generateCommentId();
   return {
     id: commentId,
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
     message: message.trim(),
     name: getRandomArrayElement(NAMES),
   };
@@ -29,13 +35,14 @@ const createPhoto = () => {
   const photoId = generatePhotoId();
   return {
     id: photoId,
-    url: `img/${getRandomInteger(1, 25)}.svg`,
-    likes: getRandomInteger(15, 200),
+    url: `photos/${getRandomInteger(1, PHOTOS_COUNT)}.jpg`,
+    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
     description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-    comments: Array.from({ length: getRandomInteger(0, 30) }, createComment)
+    comments: Array.from({ length: getRandomInteger(0, COMMENTS_COUNT) }, createComment)
   };
 };
 
-Array.from({ length: 25 }, createPhoto);
+const getPictures = () => Array.from({ length: PHOTOS_COUNT }, createPhoto);
 
-export {createPhoto};
+
+export { getPictures };
