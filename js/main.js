@@ -1,5 +1,5 @@
 import { getPictures } from './data.js';
-import { renderThumbmails } from './thumbnail.js';
+import { renderGallery } from './gallery.js';
 
 const pictures = getPictures();
-renderThumbmails(pictures);
+renderGallery(pictures);
