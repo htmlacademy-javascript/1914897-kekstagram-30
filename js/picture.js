@@ -68,8 +68,9 @@ const onClosePictureButton = () => {
 
 
 const renderPicture = ({ url, description, likes }) => {
-  bigPictureElement.querySelector('.big-picture__img img').src = url;
-  bigPictureElement.querySelector('.big-picture__img img').alt = description;
+  const bigPictureImgElement = bigPictureElement.querySelector('.big-picture__img img');
+  bigPictureImgElement.src = url;
+  bigPictureImgElement.alt = description;
   bigPictureElement.querySelector('.likes-count').textContent = likes;
   bigPictureElement.querySelector('.social__caption').textContent = description;
 };
