@@ -1,3 +1,7 @@
+import { initEffect } from './effect.js' ;
+import { reset as resetEffects } from './effect.js';
+import { resetScale } from './scale.js';
+
 const HASHTAG_MAX_COUNT = 5;
 const VALYD_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -44,6 +48,8 @@ const showModal = () => {
 const hideModal = () => {
   form.reset();
   pristine.reset();
+  resetEffects();
+  resetScale();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -54,6 +60,11 @@ const onFileInputChange = () => {
 };
 
 const onCancelButtonClick = () => {
+  hideModal();
+};
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
   hideModal();
 };
 
@@ -87,3 +98,5 @@ pristine.addValidator(
 
 imgField.addEventListener('click', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
+form.addEventListener('submit', onFormSubmit);
+initEffect();
