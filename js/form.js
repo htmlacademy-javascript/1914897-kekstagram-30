@@ -97,8 +97,9 @@ const onFormSubmit = async (evt) => {
   sendForm(evt.target);
 };
 
+const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
+
 function onDocumentKeydown(evt) {
-  const isErrorMessageExists = Boolean(document.querySelector('.error'));
   if (evt.key === 'Escape' && !isTextFieldFocused() && !isErrorMessageExists) {
     evt.preventDefault();
     hideModal();
