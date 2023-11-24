@@ -1,9 +1,15 @@
-import { initEffect } from './effect.js' ;
+import { initEffect } from './effect.js';
 import { reset as resetEffects } from './effect.js';
 import { resetScale } from './scale.js';
+import { sendPicture } from './api.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALYD_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+
+const SubmitButtonCaption = {
+  SUBMITTING: 'Отправляю...',
+  IDLE: 'Опубликовать',
+};
 
 const ERROR_TEXT = {
   INVALID_COUNT: `Максимум ${HASHTAG_MAX_COUNT} хештегов`,
@@ -15,9 +21,11 @@ const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const overlay = form.querySelector('.img-upload__overlay');
 const cancelButton = form.querySelector('.img-upload__cancel');
+const submitButton = form.querySelector('.img-upload__submit');
 const imgField = form.querySelector('.img-upload__input');
 const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
+import { showSuccessMessage, showErrorMessage } from './message.js';
 
 
 const pristine = new Pristine(form, {
@@ -45,6 +53,11 @@ const showModal = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContent = isDisabled ? SubmitButtonCaption.SUBMITTING : SubmitButtonCaption.IDLE;
+};
+
 const hideModal = () => {
   form.reset();
   pristine.reset();
@@ -63,13 +76,30 @@ const onCancelButtonClick = () => {
   hideModal();
 };
 
-const onFormSubmit = (evt) => {
+const sendForm = async (formElement) => {
+  if (!pristine.validate()) {
+    return;
+  }
+  try {
+    toggleSubmitButton(true);
+    await sendPicture(new FormData(formElement));
+    toggleSubmitButton(false);
+    hideModal();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+    toggleSubmitButton(false);
+  }
+};
+
+const onFormSubmit = async (evt) => {
   evt.preventDefault();
-  hideModal();
+  sendForm(evt.target);
 };
 
 function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
+  const isErrorMessageExists = Boolean(document.querySelector('.error'));
+  if (evt.key === 'Escape' && !isTextFieldFocused() && !isErrorMessageExists) {
     evt.preventDefault();
     hideModal();
   }
