@@ -7,6 +7,7 @@ import { showSuccessMessage, showErrorMessage } from './message.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALYD_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const SubmitButtonCaption = {
   SUBMITTING: 'Отправляю...',
@@ -19,6 +20,7 @@ const ERROR_TEXT = {
   INVALID_HASHTAG: 'Неправильный хэштег'
 };
 
+
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const overlay = form.querySelector('.img-upload__overlay');
@@ -27,6 +29,8 @@ const submitButton = form.querySelector('.img-upload__submit');
 const imgField = form.querySelector('.img-upload__input');
 const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
+const imgPreview = form.querySelector('.img-upload__preview img');
+const effectsPreview = form.querySelectorAll('.effects__preview');
 
 
 const pristine = new Pristine(form, {
@@ -69,7 +73,19 @@ const hideModal = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 const onFileInputChange = () => {
+  const file = imgField.files[0];
+  if (file && isValidType(file)) {
+    imgPreview.src = URL.createObjectURL(file);
+    effectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url('${imgPreview.src}')`;
+    });
+  }
   showModal();
 };
 
@@ -128,7 +144,7 @@ pristine.addValidator(
   true
 );
 
-imgField.addEventListener('click', onFileInputChange);
+imgField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 form.addEventListener('submit', onFormSubmit);
 initEffect();
