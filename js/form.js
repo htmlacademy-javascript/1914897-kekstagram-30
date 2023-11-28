@@ -2,6 +2,8 @@ import { initEffect } from './effect.js';
 import { reset as resetEffects } from './effect.js';
 import { resetScale } from './scale.js';
 import { sendPicture } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './message.js';
+
 
 const HASHTAG_MAX_COUNT = 5;
 const VALYD_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -25,7 +27,6 @@ const submitButton = form.querySelector('.img-upload__submit');
 const imgField = form.querySelector('.img-upload__input');
 const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
-import { showSuccessMessage, showErrorMessage } from './message.js';
 
 
 const pristine = new Pristine(form, {
