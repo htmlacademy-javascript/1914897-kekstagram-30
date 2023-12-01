@@ -1,4 +1,4 @@
-import { renderGallery } from './gallery.js';
+import { renderThumbmails } from './thumbnail.js';
 import { debounce } from './util';
 
 const MAX_RANDOM_FILTER = 10;
@@ -15,21 +15,22 @@ const filterForm = document.querySelector('.img-filters__form');
 const defaultBtn = filterForm.querySelector('#filter-default');
 const randomBtn = filterForm.querySelector('#filter-random');
 const discussedBtn = filterForm.querySelector('#filter-discussed');
+const container = document.querySelector('.pictures');
 
 const getRandomIndex = (min, max) => Math.floor(Math.random() * (max - min));
 
 const FiltersHandlers = {
   [FilterEnum.DEFAULT]: (data) => data,
   [FilterEnum.RANDOM]: (data) => {
-    const randomIndexList = [];
+    const randomIndexElements = [];
     const max = Math.min(MAX_RANDOM_FILTER, data.length);
-    while (randomIndexList.length < max) {
+    while (randomIndexElements.length < max) {
       const index = getRandomIndex(MIN_RANDOM_FILTER, data.length);
-      if (!randomIndexList.includes(index)) {
-        randomIndexList.push(index);
+      if (!randomIndexElements.includes(index)) {
+        randomIndexElements.push(index);
       }
     }
-    return randomIndexList.map((index) => data[index]);
+    return randomIndexElements.map((index) => data[index]);
   },
   [FilterEnum.DISCUSSED]: (data) => [...data].sort((item1, item2) => item2.comments.length - item1.comments.length),
 };
@@ -41,7 +42,7 @@ const repaint = (filter, data) => {
     const filteredData = FiltersHandlers[filter](data);
     const pictures = document.querySelectorAll('.picture');
     pictures.forEach((item) => item.remove());
-    renderGallery(filteredData);
+    renderThumbmails(filteredData, container);
     currentFilter = filter;
   }
 };
