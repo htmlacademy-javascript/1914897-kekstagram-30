@@ -6,7 +6,7 @@ import { showSuccessMessage, showErrorMessage } from './message.js';
 
 
 const HASHTAG_MAX_COUNT = 5;
-const VALYD_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const SubmitButtonCaption = {
@@ -14,7 +14,7 @@ const SubmitButtonCaption = {
   IDLE: 'Опубликовать',
 };
 
-const ERROR_TEXT = {
+const ErrorText = {
   INVALID_COUNT: `Максимум ${HASHTAG_MAX_COUNT} хештегов`,
   NOT_UNIQUE: 'Хэштеги должны быть уникальными',
   INVALID_HASHTAG: 'Неправильный хэштег'
@@ -41,7 +41,7 @@ const pristine = new Pristine(form, {
 
 const normalizeTags = (tags) => tags.trim().split(' ').filter((tag) => Boolean(tag.length));
 
-const hasValidTags = (value) => normalizeTags(value).every((tag) => VALYD_SYMBOLS.test(tag));
+const hasValidTags = (value) => normalizeTags(value).every((tag) => VALID_SYMBOLS.test(tag));
 
 const hasValidCount = (value) => normalizeTags(value).length <= HASHTAG_MAX_COUNT;
 
@@ -126,21 +126,21 @@ function onDocumentKeydown(evt) {
 pristine.addValidator(
   hashtagInput,
   hasValidCount,
-  ERROR_TEXT.INVALID_COUNT,
+  ErrorText.INVALID_COUNT,
   true
 );
 
 pristine.addValidator(
   hashtagInput,
   hasUniqueTags,
-  ERROR_TEXT.NOT_UNIQUE,
+  ErrorText.NOT_UNIQUE,
   true
 );
 
 pristine.addValidator(
   hashtagInput,
   hasValidTags,
-  ERROR_TEXT.INVALID_HASHTAG,
+  ErrorText.INVALID_HASHTAG,
   true
 );
 
